@@ -28,17 +28,34 @@ button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
 .overlay { position: absolute; inset: 0; }
 .loading { z-index: 50; display: grid; place-items: center; padding: 24px; text-align: center; background: #211025; }
 .loading-icon { font-size: 58px; }
-.title-screen { display: flex; flex-direction: column; justify-content: space-between; padding: max(24px, env(safe-area-inset-top)) 24px 76px; z-index: 20; background: linear-gradient(0deg, #190d1cc9, transparent 42%); }
+.title-screen { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; padding: max(24px, env(safe-area-inset-top)) 24px 76px; z-index: 20; background: linear-gradient(0deg, #190d1cc9, transparent 42%); }
 .best-score { align-self: flex-start; padding: 10px 16px; border-radius: 14px; border: 1px solid #ffcc7180; background: #321926d9; font-size: 14px; }
-.launch-dock { align-self: center; display: flex; align-items: center; gap: 20px; max-width: 820px; padding: 18px 24px; border: 1px solid #ffd681a6; border-radius: 24px; background: #321926e8; box-shadow: 0 12px 40px #0005; }
-.launch-dock img { width: 76px; height: 76px; object-fit: contain; }
-.instructions { flex: 1; }
-.instructions h1 { font-size: 20px; margin: 0 0 8px; color: #ffdb89; }
-.instructions p { font-size: 14px; line-height: 1.7; margin: 0; }
+.launch-dock {
+    /* Double the original dimensions on desktop, scaling down with the viewport. */
+    --launch-unit: clamp(1px, 0.15625vw, 2px);
+    align-self: center;
+    display: flex;
+    align-items: center;
+    gap: calc(20 * var(--launch-unit));
+    width: max-content;
+    max-width: min(100%, 1640px);
+    min-height: 0;
+    overflow: auto;
+    padding: 0 calc(24 * var(--launch-unit));
+    border: 1px solid #ffd681a6;
+    border-radius: calc(24 * var(--launch-unit));
+    background: #321926ae;
+    box-shadow: 0 12px 40px #0005;
+}
+.launch-dock img { flex-shrink: 0; width: calc(76 * var(--launch-unit)); height: calc(76 * var(--launch-unit)); object-fit: contain; }
+.instructions { flex: 1; min-width: 0; }
+.instructions h1 { font-size: calc(20 * var(--launch-unit)); margin: 0 0 calc(8 * var(--launch-unit)); color: #ffdb89; }
+.instructions p { font-size: calc(14 * var(--launch-unit)); line-height: 1.7; margin: 0; }
 .instructions .hint { color: #f6c2d9; }
 .play-button { padding: 14px 24px; border: 1px solid #ffb4d0; border-radius: 16px; color: white; white-space: nowrap; background: linear-gradient(#fa71a5, #dc2864); box-shadow: 0 5px 0 #9c1847, 0 8px 20px #0004; }
 .play-button:hover { filter: brightness(1.12); }
 .play-button:active { transform: translateY(3px); box-shadow: 0 2px 0 #9c1847; }
+.launch-dock .play-button { flex-shrink: 0; padding: calc(14 * var(--launch-unit)) calc(24 * var(--launch-unit)); border-radius: calc(16 * var(--launch-unit)); font-size: calc(20 * var(--launch-unit)); }
 .secondary-button { padding: 12px 18px; border: 1px solid #a95c2a; border-radius: 14px; color: #572e1d; background: #ffdb8f; }
 .hud { position: absolute; top: max(16px, env(safe-area-inset-top)); left: max(16px, env(safe-area-inset-left)); right: max(16px, env(safe-area-inset-right)); display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; pointer-events: none; z-index: 10; }
 .hud-panel { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 16px; background: #321926de; border: 1px solid #ffd681a6; box-shadow: 0 4px 16px #0003; }
@@ -55,24 +72,41 @@ button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
 #hudFeverBadge { margin-top: 8px; padding: 6px 10px; max-width: 240px; background: #d93683; border-radius: 20px; text-align: center; font-size: 11px; }
 #btnPauseGame { pointer-events: auto; }
 .game-over { display: flex; align-items: center; justify-content: center; padding: 24px 20px 76px; background: #190d1cbf; z-index: 30; }
-.results { width: min(100%, 500px); max-height: 100%; overflow: auto; padding: 24px; border: 3px solid #a86430; border-radius: 26px; background: linear-gradient(#fff5e4, #ffe4c5); color: #572e1d; text-align: center; box-shadow: 0 16px 60px #0006; }
-.results img { width: 100px; height: 100px; object-fit: contain; }
-#goBadge { color: #b42a62; font-size: 12px; }
-#goTitle { font-size: 24px; margin: 10px 0; }
-#goRankTitle { font-size: 14px; color: #c13268; }
-.result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-.result-stats div { background: #fff9; padding: 12px 4px; border-radius: 12px; }
-.result-stats small { display: block; font-size: 11px; }
-.result-stats strong { font-size: 25px; color: #be315f; }
-.result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; }
+.results {
+    /* Scale the panel and its contents together, allowing for short viewports. */
+    --result-unit: clamp(1px, min(0.2vw, 0.2vh), 2px);
+    width: min(100%, calc(500 * var(--result-unit)));
+    max-height: 100%;
+    overflow: auto;
+    padding: calc(24 * var(--result-unit));
+    padding-top: 0;
+    border: calc(3 * var(--result-unit)) solid #a86430;
+    border-radius: calc(26 * var(--result-unit));
+    background: linear-gradient(#fff5e4, #ffe4c5);
+    color: #572e1d;
+    text-align: center;
+    box-shadow: 0 16px 60px #0006;
+}
+.results img { width: calc(120 * var(--result-unit)); height: calc(120 * var(--result-unit)); object-fit: contain; }
+#goBadge { color: #b42a62; font-size: calc(12 * var(--result-unit)); }
+#goTitle { font-size: calc(24 * var(--result-unit)); margin: calc(10 * var(--result-unit)) 0; }
+#goRankTitle { font-size: calc(14 * var(--result-unit)); margin: calc(14 * var(--result-unit)) 0; color: #c13268; }
+.result-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: calc(10 * var(--result-unit)); margin: calc(20 * var(--result-unit)) 0; }
+.result-stats div { background: #fff9; padding: calc(12 * var(--result-unit)) calc(4 * var(--result-unit)); border-radius: calc(12 * var(--result-unit)); overflow-wrap: anywhere; }
+.result-stats small { display: block; font-size: calc(11 * var(--result-unit)); }
+.result-stats strong { font-size: calc(25 * var(--result-unit)); color: #be315f; }
+.result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: calc(14 * var(--result-unit)); }
+.result-actions button { font-size: calc(16 * var(--result-unit)); }
+.result-actions .play-button { padding: calc(14 * var(--result-unit)) calc(24 * var(--result-unit)); border-radius: calc(16 * var(--result-unit)); }
+.result-actions .secondary-button { padding: calc(12 * var(--result-unit)) calc(18 * var(--result-unit)); border-radius: calc(14 * var(--result-unit)); }
+@media (max-width: 960px) {
+    .launch-dock { flex-wrap: wrap; justify-content: center; }
+    .launch-dock .play-button { width: 100%; }
+}
 @media (max-width: 640px) {
     .title-screen { padding: max(12px, env(safe-area-inset-top)) 12px 68px; }
-    .launch-dock { flex-wrap: wrap; justify-content: center; padding: 16px; gap: 12px; }
-    .launch-dock img { width: 56px; height: 56px; }
-    .instructions { flex-basis: calc(100% - 72px); }
-    .instructions h1 { font-size: 16px; }
-    .instructions p { font-size: 12px; }
-    .launch-dock .play-button { width: 100%; }
+    .launch-dock { --launch-unit: clamp(1px, 0.25vw, 1.25px); padding: 20px; gap: 16px; }
+    .launch-dock .play-button { min-height: 60px; font-size: 22px; }
     .hud { left: 8px; right: 8px; top: max(8px, env(safe-area-inset-top)); gap: 5px; }
     .hud-panel { padding: 8px; gap: 5px; border-radius: 12px; }
     .hud-panel img { display: none; }
@@ -87,15 +121,15 @@ button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
 }
 @media (max-height: 500px) {
     .title-screen { padding: 10px 16px 56px; }
-    .launch-dock { padding: 10px 16px; gap: 12px; }
+    .launch-dock { --launch-unit: 1px; padding: 10px 16px; gap: 12px; }
     .launch-dock img { display: none; }
     .instructions h1 { font-size: 16px; margin-bottom: 4px; }
     .instructions p { font-size: 12px; line-height: 1.4; }
-    .launch-dock .play-button { width: auto; }
+    .launch-dock .play-button { width: auto; min-height: 56px; padding: 16px 28px; font-size: 20px; }
     .instructions { flex-basis: auto; }
-    .results { padding: 12px 20px; }
-    .results img { width: 50px; height: 50px; }
-    #goTitle { font-size: 20px; margin: 6px 0; }
+    .results { padding: 16px 20px; }
+    .results img { width: 64px; height: 64px; }
+    #goTitle { font-size: 24px; margin: 6px 0; }
     #goRankTitle { margin: 6px 0; }
     .result-stats { margin: 10px 0; }
     .game-over { padding: 10px 20px 56px; }
