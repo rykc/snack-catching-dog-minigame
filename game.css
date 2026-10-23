@@ -29,7 +29,7 @@ button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
 .loading { z-index: 50; display: grid; place-items: center; padding: 24px; text-align: center; background: #211025; }
 .loading-icon { font-size: 58px; }
 .title-screen { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; padding: max(24px, env(safe-area-inset-top)) 24px 76px; z-index: 20; background: linear-gradient(0deg, #190d1cc9, transparent 42%); }
-.best-score { align-self: flex-start; padding: 10px 16px; border-radius: 14px; border: 1px solid #ffcc7180; background: #321926d9; font-size: 14px; }
+.best-score { align-self: flex-start; padding: 10px 16px; border-radius: 14px; border: 1px solid #ffcc7180; background: #321926d9; font-size: 3rem; }
 .launch-dock {
     /* Double the original dimensions on desktop, scaling down with the viewport. */
     --launch-unit: clamp(1px, 0.15625vw, 2px);

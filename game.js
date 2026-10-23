@@ -39,6 +39,7 @@ async function loadAssets() {
     class CandySoundSystem {
         constructor() {
             this.ctx = null;
+            this.masterGain = null;
             this.enabled = true;
             this.bgmTimer = null;
             this.noteIndex = 0;
@@ -53,7 +54,27 @@ async function loadAssets() {
         ensureContext() {
             if (!this.ctx) {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                if (AudioCtx) this.ctx = new AudioCtx();
+                if (AudioCtx) {
+                    this.ctx = new AudioCtx();
+                    this.masterGain = this.ctx.createGain();
+                    this.masterGain.gain.value = 4;
+
+                    // Keep overlapping effects controlled after the volume boost.
+                    const compressor = this.ctx.createDynamicsCompressor();
+                    compressor.threshold.value = -6;
+                    compressor.knee.value = 6;
+                    compressor.ratio.value = 12;
+                    compressor.attack.value = 0.003;
+                    compressor.release.value = 0.15;
+
+                    const limiter = this.ctx.createWaveShaper();
+                    limiter.curve = Float32Array.from({ length: 2049 }, (_, i) =>
+                        Math.tanh(i / 1024 - 1));
+                    limiter.oversample = '4x';
+                    this.masterGain.connect(compressor);
+                    compressor.connect(limiter);
+                    limiter.connect(this.ctx.destination);
+                }
             }
             if (this.ctx && this.ctx.state === 'suspended') {
                 this.ctx.resume();
@@ -87,7 +108,7 @@ async function loadAssets() {
             gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
             osc.connect(gain);
-            gain.connect(this.ctx.destination);
+            gain.connect(this.masterGain);
             osc.start(now);
             osc.stop(now + duration);
         }
