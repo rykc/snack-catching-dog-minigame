@@ -1,0 +1,102 @@
+:root {
+    color-scheme: dark;
+    font-family: "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif;
+    color: #fff2d6;
+    background: #211025;
+    font-weight: 700;
+}
+* { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; }
+button { font: inherit; cursor: pointer; touch-action: manipulation; }
+button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+.hidden { display: none !important; }
+#stageWrapper { position: fixed; inset: 0; width: 100%; height: 100%; height: 100dvh; background: #211025; overflow: hidden; }
+#stageWrapper:fullscreen { width: 100%; height: 100%; }
+#stageWrapper:-webkit-full-screen { width: 100%; height: 100%; }
+#gameCanvas { width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+#gameCanvas:active { cursor: grabbing; }
+.game-controls {
+    position: absolute;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    display: flex;
+    gap: 8px;
+    z-index: 40;
+}
+.control-button { color: #ffe4a7; background: #341729e6; border: 1px solid #ffd58680; border-radius: 12px; padding: 9px 14px; font-size: 13px; }
+.control-button:hover { background: #64304d; }
+.overlay { position: absolute; inset: 0; }
+.loading { z-index: 50; display: grid; place-items: center; padding: 24px; text-align: center; background: #211025; }
+.loading-icon { font-size: 58px; }
+.title-screen { display: flex; flex-direction: column; justify-content: space-between; padding: max(24px, env(safe-area-inset-top)) 24px 76px; z-index: 20; background: linear-gradient(0deg, #190d1cc9, transparent 42%); }
+.best-score { align-self: flex-start; padding: 10px 16px; border-radius: 14px; border: 1px solid #ffcc7180; background: #321926d9; font-size: 14px; }
+.launch-dock { align-self: center; display: flex; align-items: center; gap: 20px; max-width: 820px; padding: 18px 24px; border: 1px solid #ffd681a6; border-radius: 24px; background: #321926e8; box-shadow: 0 12px 40px #0005; }
+.launch-dock img { width: 76px; height: 76px; object-fit: contain; }
+.instructions { flex: 1; }
+.instructions h1 { font-size: 20px; margin: 0 0 8px; color: #ffdb89; }
+.instructions p { font-size: 14px; line-height: 1.7; margin: 0; }
+.instructions .hint { color: #f6c2d9; }
+.play-button { padding: 14px 24px; border: 1px solid #ffb4d0; border-radius: 16px; color: white; white-space: nowrap; background: linear-gradient(#fa71a5, #dc2864); box-shadow: 0 5px 0 #9c1847, 0 8px 20px #0004; }
+.play-button:hover { filter: brightness(1.12); }
+.play-button:active { transform: translateY(3px); box-shadow: 0 2px 0 #9c1847; }
+.secondary-button { padding: 12px 18px; border: 1px solid #a95c2a; border-radius: 14px; color: #572e1d; background: #ffdb8f; }
+.hud { position: absolute; top: max(16px, env(safe-area-inset-top)); left: max(16px, env(safe-area-inset-left)); right: max(16px, env(safe-area-inset-right)); display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; pointer-events: none; z-index: 10; }
+.hud-panel { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 16px; background: #321926de; border: 1px solid #ffd681a6; box-shadow: 0 4px 16px #0003; }
+.hud-panel img { width: 48px; height: 48px; object-fit: contain; }
+.hud-label { font-size: 11px; color: #ffd88f; }
+#hudLives { font-size: 22px; white-space: nowrap; }
+.lost-life { opacity: .3; }
+.hud-timer { text-align: center; }
+#hudTimer { font-size: 30px; line-height: 1.1; }
+.hud-right { display: flex; align-items: center; gap: 8px; }
+.hud-score { text-align: right; min-width: 105px; }
+#hudScore { color: #ffdf79; font-size: 26px; }
+#hudComboBadge { font-size: 11px; color: #ffadd0; }
+#hudFeverBadge { margin-top: 8px; padding: 6px 10px; max-width: 240px; background: #d93683; border-radius: 20px; text-align: center; font-size: 11px; }
+#btnPauseGame { pointer-events: auto; }
+.game-over { display: flex; align-items: center; justify-content: center; padding: 24px 20px 76px; background: #190d1cbf; z-index: 30; }
+.results { width: min(100%, 500px); max-height: 100%; overflow: auto; padding: 24px; border: 3px solid #a86430; border-radius: 26px; background: linear-gradient(#fff5e4, #ffe4c5); color: #572e1d; text-align: center; box-shadow: 0 16px 60px #0006; }
+.results img { width: 100px; height: 100px; object-fit: contain; }
+#goBadge { color: #b42a62; font-size: 12px; }
+#goTitle { font-size: 24px; margin: 10px 0; }
+#goRankTitle { font-size: 14px; color: #c13268; }
+.result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+.result-stats div { background: #fff9; padding: 12px 4px; border-radius: 12px; }
+.result-stats small { display: block; font-size: 11px; }
+.result-stats strong { font-size: 25px; color: #be315f; }
+.result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; }
+@media (max-width: 640px) {
+    .title-screen { padding: max(12px, env(safe-area-inset-top)) 12px 68px; }
+    .launch-dock { flex-wrap: wrap; justify-content: center; padding: 16px; gap: 12px; }
+    .launch-dock img { width: 56px; height: 56px; }
+    .instructions { flex-basis: calc(100% - 72px); }
+    .instructions h1 { font-size: 16px; }
+    .instructions p { font-size: 12px; }
+    .launch-dock .play-button { width: 100%; }
+    .hud { left: 8px; right: 8px; top: max(8px, env(safe-area-inset-top)); gap: 5px; }
+    .hud-panel { padding: 8px; gap: 5px; border-radius: 12px; }
+    .hud-panel img { display: none; }
+    #hudLives { font-size: 16px; }
+    #hudTimer { font-size: 24px; }
+    #hudScore { font-size: 22px; }
+    .hud-score { min-width: 68px; }
+    .hud-right { gap: 4px; }
+    .hud-right .control-button { padding: 10px; }
+    #hudFeverBadge { max-width: 110px; font-size: 10px; }
+    .game-controls { right: max(10px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); }
+}
+@media (max-height: 500px) {
+    .title-screen { padding: 10px 16px 56px; }
+    .launch-dock { padding: 10px 16px; gap: 12px; }
+    .launch-dock img { display: none; }
+    .instructions h1 { font-size: 16px; margin-bottom: 4px; }
+    .instructions p { font-size: 12px; line-height: 1.4; }
+    .launch-dock .play-button { width: auto; }
+    .instructions { flex-basis: auto; }
+    .results { padding: 12px 20px; }
+    .results img { width: 50px; height: 50px; }
+    #goTitle { font-size: 20px; margin: 6px 0; }
+    #goRankTitle { margin: 6px 0; }
+    .result-stats { margin: 10px 0; }
+    .game-over { padding: 10px 20px 56px; }
+}

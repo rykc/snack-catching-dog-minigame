@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#211025">
+    <title>貪吃狗點心屋：婷婷的糖果花園</title>
+    <link rel="stylesheet" href="game.css">
+    <script src="game.js" defer></script>
+</head>
+<body>
+    <main id="stageWrapper" aria-label="婷婷的糖果花園遊戲">
+        <canvas id="gameCanvas" width="1280" height="720" aria-label="移動婷婷接住糖果，避開朱古力">你的瀏覽器需要支援 Canvas 才能遊玩。</canvas>
+
+        <div id="loadingOverlay" class="overlay loading" role="status">
+            <div><div class="loading-icon" aria-hidden="true">🐩</div><p id="loadingText">正在載入糖果花園…</p></div>
+        </div>
+
+        <div id="hudOverlay" class="hud hidden">
+            <div class="hud-panel">
+                <img id="hudAvatarImg" src="assets/sprites_png/tingting_normal.png" alt="婷婷">
+                <div><div class="hud-label">生命值</div><div id="hudLives">❤️❤️❤️</div></div>
+            </div>
+            <div>
+                <div class="hud-panel hud-timer"><div><div class="hud-label">剩餘秒數</div><div id="hudTimer">60</div></div></div>
+                <div id="hudFeverBadge" class="hidden">🌈 狂熱！雙倍得分＋甜點磁鐵</div>
+            </div>
+            <div class="hud-right">
+                <div class="hud-panel hud-score"><div><div class="hud-label">得分 <span id="hudComboBadge" class="hidden"></span></div><div id="hudScore">0</div></div></div>
+                <button id="btnPauseGame" class="control-button" aria-label="返回封面" title="返回封面">🏠</button>
+            </div>
+        </div>
+
+        <div id="titleOverlay" class="overlay title-screen hidden">
+            <div class="best-score">🏆 最高分：<span id="titleHighScore">0</span></div>
+            <div class="launch-dock">
+                <img src="assets/sprites_png/tingting_happy.png" alt="開心的婷婷">
+                <div class="instructions">
+                    <h1>婷婷的糖果花園</h1>
+                    <p>接住甜點，避開朱古力！</p>
+                    <p class="hint">滑鼠移動、觸控拖曳，或按 ← → 控制婷婷。</p>
+                </div>
+                <button id="btnStartGame" class="play-button">▶ 開始遊戲</button>
+            </div>
+        </div>
+
+        <div id="gameOverOverlay" class="overlay game-over hidden" role="dialog" aria-modal="true" aria-labelledby="goTitle">
+            <div class="results">
+                <img id="goAvatarImg" src="assets/sprites_png/tingting_happy.png" alt="婷婷的表情">
+                <div id="goBadge"></div>
+                <h2 id="goTitle">點心時間結束！</h2>
+                <p id="goRankTitle"></p>
+                <div class="result-stats">
+                    <div><small>最終得分</small><strong id="goFinalScore">0</strong></div>
+                    <div><small>最高連擊</small><strong id="goMaxCombo">0</strong></div>
+                    <div><small>歷史最高</small><strong id="goBestScore">0</strong></div>
+                </div>
+                <div class="result-actions">
+                    <button id="btnPlayAgain" class="play-button">再玩一次</button>
+                    <button id="btnBackToTitle" class="secondary-button">返回封面</button>
+                </div>
+            </div>
+        </div>
+
+        <nav class="game-controls" aria-label="遊戲設定">
+            <button id="btnToggleAudio" class="control-button" aria-pressed="true">音效：開啟</button>
+            <button id="btnFullscreen" class="control-button" aria-pressed="false">全螢幕</button>
+        </nav>
+    </main>
+</body>
+</html>
