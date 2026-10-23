@@ -29,7 +29,23 @@ button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
 .loading { z-index: 50; display: grid; place-items: center; padding: 24px; text-align: center; background: #211025; }
 .loading-icon { font-size: 58px; }
 .title-screen { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; padding: max(24px, env(safe-area-inset-top)) 24px 76px; z-index: 20; background: linear-gradient(0deg, #190d1cc9, transparent 42%); }
-.best-score { align-self: flex-start; padding: 10px 16px; border-radius: 14px; border: 1px solid #ffcc7180; background: #321926d9; font-size: 3rem; }
+.best-score {
+    --score-unit: clamp(1px, min(0.15625vw, 0.22222vh), 2px);
+    align-self: flex-start;
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(4 * var(--score-unit));
+    max-width: 100%;
+    padding: calc(10 * var(--score-unit)) calc(16 * var(--score-unit));
+    border-radius: calc(14 * var(--score-unit));
+    border: 1px solid #ffcc7180;
+    background: #321926d9;
+    font-size: calc(20 * var(--score-unit));
+    line-height: 1.3;
+}
+#titleHighScore { min-width: 0; max-width: 100%; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
 .launch-dock {
     /* Double the original dimensions on desktop, scaling down with the viewport. */
     --launch-unit: clamp(1px, 0.15625vw, 2px);
@@ -121,6 +137,7 @@ button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
 }
 @media (max-height: 500px) {
     .title-screen { padding: 10px 16px 56px; }
+    .best-score { --score-unit: clamp(0.75px, 0.24vh, 1px); }
     .launch-dock { --launch-unit: 1px; padding: 10px 16px; gap: 12px; }
     .launch-dock img { display: none; }
     .instructions h1 { font-size: 16px; margin-bottom: 4px; }
